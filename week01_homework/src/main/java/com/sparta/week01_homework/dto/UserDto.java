@@ -2,6 +2,7 @@ package com.sparta.week01_homework.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sparta.week01_homework.entity.User;
+import com.sparta.week01_homework.entity.UserRoleEnum;
 import com.sun.istack.NotNull;
 import lombok.*;
 
@@ -29,7 +30,8 @@ public class UserDto {
     @Size(min = 3, max = 50)
     private String nickname;
 
-    private Set<AuthorityDto> authorityDtoSet;
+    @NotNull
+    private UserRoleEnum role;
 
     public static UserDto from(User user) {
         if(user == null) return null;
@@ -37,9 +39,8 @@ public class UserDto {
         return UserDto.builder()
                 .username(user.getUsername())
                 .nickname(user.getNickname())
-                .authorityDtoSet(user.getAuthorities().stream()
-                        .map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName()).build())
-                        .collect(Collectors.toSet()))
+                .password(user.getPassword())
+                .role(user.getRole())
                 .build();
     }
 }

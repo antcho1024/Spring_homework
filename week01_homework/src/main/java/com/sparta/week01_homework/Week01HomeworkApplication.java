@@ -18,9 +18,7 @@ public class Week01HomeworkApplication {
 	@Bean
 	public CommandLineRunner demo(BoardRepository repository, BoardService boardService) {
 		return (args) -> {
-//			repository.save(new Board("a","bb","123","asdf"));
-//			BoardPasswordDto passwordDto = new BoardPasswordDto("123");
-//			System.out.println(boardService.checkPassword(1L,passwordDto));
+
 		};
 	}
 }

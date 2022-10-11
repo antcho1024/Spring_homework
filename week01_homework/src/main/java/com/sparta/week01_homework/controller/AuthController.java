@@ -36,7 +36,7 @@ public class AuthController {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()); // 디ㅣ티오를 이용해 토큰 생성
 
-        // authenticationToken 을 이용해서 authentication 객체를 생성하기위햐
+        // authenticationToken 을 이용해서 authentication 객체를 생성하기위해
         // authenticate 메소드가 실행이 되고
         // 그 때 CustomUserDetailsService의 loadUserByUsername 메소드가 실행됨
         // 그 결과를 갖고 authentication 객체 생성

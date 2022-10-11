@@ -1,14 +1,11 @@
 package com.sparta.week01_homework.service;
 
 import com.sparta.week01_homework.dto.UserDto;
-import com.sparta.week01_homework.entity.Authority;
 import com.sparta.week01_homework.entity.User;
 import com.sparta.week01_homework.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collections;
 
 @Service
 
@@ -29,16 +26,13 @@ public class UserService {
 //        }
 
         // 이미 가입 되어있지 않으면
-        Authority authority = Authority.builder() // 권한 정보 만들고
-                .authorityName("ROLE_USER")
-                .build();
 
         // 권한 정보도 넣어서 유저 정보를 만들어서 save
         User user = User.builder()
                 .username(userDto.getUsername())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .nickname(userDto.getNickname())
-                .authorities(Collections.singleton(authority))
+                .role(userDto.getRole())
                 .activated(true)
                 .build();
 

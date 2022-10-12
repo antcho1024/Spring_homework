@@ -26,9 +26,10 @@ public class UserDto {
     @Size(min = 3, max = 100)
     private String password;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotNull
-    @Size(min = 3, max = 50)
-    private String nickname;
+    @Size(min = 3, max = 100)
+    private String passwordCheck;
 
     @NotNull
     private UserRoleEnum role;
@@ -38,8 +39,8 @@ public class UserDto {
 
         return UserDto.builder()
                 .username(user.getUsername())
-                .nickname(user.getNickname())
                 .password(user.getPassword())
+                .passwordCheck(user.getPassword())
                 .role(user.getRole())
                 .build();
     }

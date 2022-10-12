@@ -21,22 +21,20 @@ public class UserService {
     //회원가입
     @Transactional
     public UserDto signup(UserDto userDto) {
-//        if (userRepository.findOneWithAuthoritiesByUsername(userDto.getUsername()).orElse(null) != null) {
-//            throw new DuplicateMemberException("이미 가입되어 있는 유저입니다.");
-//        }
-
-        // 이미 가입 되어있지 않으면
-
+        if (userRepository.findOneByUsername(userDto.getUsername()).orElse(null) != null) {
+            throw new RuntimeException("이미 가입되어 있는 유저입니다.");
+        }
+        if(!userDto.getPassword().equals(userDto.getPasswordCheck())){
+            throw new RuntimeException("비밀번호가 서로 일치하지 않습니다.");
+        }
         // 권한 정보도 넣어서 유저 정보를 만들어서 save
         User user = User.builder()
                 .username(userDto.getUsername())
                 .password(passwordEncoder.encode(userDto.getPassword()))
-                .nickname(userDto.getNickname())
                 .role(userDto.getRole())
                 .activated(true)
                 .build();
 
         return UserDto.from(userRepository.save(user));
-//        return userRepository.save(user);
     }
 }

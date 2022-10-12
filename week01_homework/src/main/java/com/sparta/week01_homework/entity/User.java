@@ -39,6 +39,6 @@ public class User {
 //    private Set<Authority> authorities;
 //    private String authorityName;
     @Column(name = "role")
-    @Enumerated(value = EnumType.ORDINAL)
+    @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 }

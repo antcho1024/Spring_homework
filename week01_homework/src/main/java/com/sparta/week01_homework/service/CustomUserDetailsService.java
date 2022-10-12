@@ -23,38 +23,47 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     // 로그인 시에 DB에서 유저 정보와 권한 정보를 가져오게 됨
+//    @Override
+//    @Transactional
+//    public UserDetails loadUserByUsername(final String username) {
+//        return userRepository.findOneByUsername(username)
+//                .map(this::createUser)
+//                .orElseThrow(() -> new UsernameNotFoundException(username + " -> 데이터베이스에서 찾을 수 없습니다."));
+//    }
+//
+//    // 해당 정보를 기반으로 활성화 상태면 userdetails.User 객체를 생성해서 리턴
+//    private UserDetails createUser(User user) {
+//        if (!user.isActivated()) {
+//            throw new RuntimeException( " -> 활성화되어 있지 않습니다.");
+//        }
+//        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(user.getRole().toString());
+//
+//        return new org.springframework.security.core.userdetails.User(
+//                user.getUsername(),
+//                user.getPassword(),
+//                Collections.singleton(grantedAuthority)
+//        );
+//    }
+
     @Override
     @Transactional
     public UserDetails loadUserByUsername(final String username) {
-//        return userRepository.findOneWithAuthoritiesByUsername(username)
-//                .map(user -> createUser(username, user))
-//                .orElseThrow(() -> new UsernameNotFoundException(username + " -> 데이터베이스에서 찾을 수 없습니다."));
+        User user = userRepository.findOneByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Can't find " + username));
 
-//        return userRepository.findOneWithAuthoritiesByUsername(username)
-        return userRepository.findOneByUsername(username)
-                .map(this::createUser)
-                .orElseThrow(() -> new UsernameNotFoundException(username + " -> 데이터베이스에서 찾을 수 없습니다."));
+        return new CustomUserDetailsImpl(user);
     }
-
     // 해당 정보를 기반으로 활성화 상태면 userdetails.User 객체를 생성해서 리턴
-    private UserDetails createUser(User user) {
-        if (!user.isActivated()) {
-            throw new RuntimeException( " -> 활성화되어 있지 않습니다.");
-        }
-        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(user.getRole().toString());
-
-//        List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
-//                .map(authority -> new SimpleGrantedAuthority(authority.getAuthorityName()))
-//                .collect(Collectors.toList());
-
-//        return new org.springframework.security.core.userdetails.User(user.getUsername(),
+//    private UserDetails createUser(User user) {
+//        if (!user.isActivated()) {
+//            throw new RuntimeException( " -> 활성화되어 있지 않습니다.");
+//        }
+//        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(user.getRole().toString());
+//
+//        return new org.springframework.security.core.userdetails.User(
+//                user.getUsername(),
 //                user.getPassword(),
-//                grantedAuthority);
-
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
-                Collections.singleton(grantedAuthority)
-        );
-    }
+//                Collections.singleton(grantedAuthority)
+//        );
+//    }
 }

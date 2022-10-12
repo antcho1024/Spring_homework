@@ -5,13 +5,16 @@ import com.sparta.week01_homework.dto.BoardRequestDto;
 import com.sparta.week01_homework.entity.Board;
 import com.sparta.week01_homework.repository.BoardRepository;
 import com.sparta.week01_homework.service.BoardService;
+import com.sparta.week01_homework.service.CustomUserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -21,6 +24,10 @@ public class AuthController {
     private final BoardRepository boardRepository;
     private final BoardService boardService;
 
+    @PostMapping("/test")
+    public void testAuth(@AuthenticationPrincipal CustomUserDetailsImpl userDetails){
+        System.out.println("dkdkdkdkd");
+    }
 
     // 작성
     @PostMapping("/post")

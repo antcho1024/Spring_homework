@@ -48,22 +48,6 @@ public class TokenProvider implements InitializingBean {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    //Authentication 객체의 권한 정보를 이용해서 토큰을 생성하는 메소드
-//    public String createToken(Authentication authentication) {
-//        String authorities = authentication.getAuthorities().stream()
-//                .map(GrantedAuthority::getAuthority)
-//                .collect(Collectors.joining(","));
-//
-//        long now = (new Date()).getTime();
-//        Date validity = new Date(now + this.tokenValidityInMilliseconds); //만료시간 설정
-//
-//        return Jwts.builder() //토큰 생성, 리턴
-//                .setSubject(authentication.getName())
-//                .claim(AUTHORITIES_KEY, authorities)
-//                .signWith(key, SignatureAlgorithm.HS512)
-//                .setExpiration(validity)
-//                .compact();
-//    }
 
     public TokenDto createToken(Authentication authentication) {
         // 권한들 가져오기

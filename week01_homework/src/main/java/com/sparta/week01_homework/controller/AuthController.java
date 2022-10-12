@@ -27,12 +27,13 @@ public class AuthController {
     @PostMapping("/test")
     public void testAuth(@AuthenticationPrincipal CustomUserDetailsImpl userDetails){
         System.out.println("dkdkdkdkd");
+        System.out.println(userDetails.getUsername());
     }
 
     // 작성
     @PostMapping("/post")
-    public Board createPost(@RequestBody BoardRequestDto boardRequestDto) {
-        Board board = new Board(boardRequestDto);
+    public Board createPost(@RequestBody BoardRequestDto boardRequestDto, @AuthenticationPrincipal CustomUserDetailsImpl userDetails) {
+        Board board = new Board(boardRequestDto,userDetails);
         return boardRepository.save(board);
     }
     //수정

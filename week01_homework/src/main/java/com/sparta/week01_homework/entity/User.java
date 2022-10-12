@@ -3,6 +3,7 @@ package com.sparta.week01_homework.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -31,4 +32,7 @@ public class User {
     @Column(name = "role")
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
+
+    @OneToMany
+    private List<Board> boards;
 }

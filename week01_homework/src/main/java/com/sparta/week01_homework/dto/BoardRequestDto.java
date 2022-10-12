@@ -9,8 +9,6 @@ import java.util.Locale;
 @Getter
 public class BoardRequestDto {
     private String title;
-    private String author;
-    private String password;
     private String content;
     private Category category;
 }

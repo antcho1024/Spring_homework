@@ -28,12 +28,5 @@ public class BoardService {
         else if (category == Category.Game.ordinal()) return Category.Game;
         return Category.Play;
     }
-    public Boolean checkPassword(Long id, BoardPasswordDto boardPasswordDto){
-        Board board = boardRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("해당 아이디가 존재하지 않습니다.")
-        );
-        return board.getPassword().equals(boardPasswordDto.getPassword());
-    }
-
 
 }

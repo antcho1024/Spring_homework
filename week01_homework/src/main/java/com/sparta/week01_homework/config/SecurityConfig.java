@@ -72,7 +72,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/api/member/**").permitAll()
                 .antMatchers("/api/post/**").permitAll()
-                .antMatchers("/api/auth/**").permitAll()//임시
+//                .antMatchers("/api/auth/**").permitAll()//임시
 
                 .anyRequest().authenticated() // 나머지 요청들에 대해는 모두 인증을 받아야한다.
 

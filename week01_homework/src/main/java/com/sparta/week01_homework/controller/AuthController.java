@@ -3,10 +3,12 @@ package com.sparta.week01_homework.controller;
 import com.sparta.week01_homework.dto.LoginDto;
 import com.sparta.week01_homework.dto.TokenDto;
 import com.sparta.week01_homework.dto.TokenRequestDto;
+import com.sparta.week01_homework.dto.UserDto;
 import com.sparta.week01_homework.entity.RefreshToken;
 import com.sparta.week01_homework.jwt.JwtFilter;
 import com.sparta.week01_homework.jwt.TokenProvider;
 import com.sparta.week01_homework.repository.RefreshTokenRepository;
+import com.sparta.week01_homework.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,13 +28,22 @@ import javax.validation.Valid;
 //로그인 API 만들기
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/auth")
 public class AuthController {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final UserService userService; //회원가입 도와줌
 
+    // 회원가입
+    @PostMapping("/signup")
+    public ResponseEntity<UserDto> signup(
+            @Valid @RequestBody UserDto userDto
+    ) {
+        return ResponseEntity.ok(userService.signup(userDto));
+    }
 
+    // 로그인
     @PostMapping("/authenticate")
     public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) { //로그인 디티오로 정보 받고
 

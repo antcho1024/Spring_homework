@@ -71,8 +71,9 @@ public class SecurityConfig {
                 //HTTPServletRequest를 사용하는 요청들에 대한 접근 제한을 설정하겠다
                 .authorizeRequests()
 //                .antMatchers("/api/hello").permitAll() // /api/hello 에 대한 접근은 인증없이 허용하겠다
-                .antMatchers("/api/authenticate").permitAll() //토큰을 받기 위한 로그인 api와
-                .antMatchers("/api/signup").permitAll() //회원 가입을 위한 api는 토큰이 없는 상태에서 이뤄지기 때문에 permitall
+//                .antMatchers("/api/authenticate").permitAll() //토큰을 받기 위한 로그인 api와
+//                .antMatchers("/api/signup").permitAll() //회원 가입을 위한 api는 토큰이 없는 상태에서 이뤄지기 때문에 permitall
+                .antMatchers("/api/auth/**").permitAll()
 
                 .anyRequest().authenticated() // 나머지 요청들에 대해는 모두 인증을 받아야한다.
 

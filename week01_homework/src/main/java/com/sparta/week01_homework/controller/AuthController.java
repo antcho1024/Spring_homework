@@ -6,6 +6,7 @@ import com.sparta.week01_homework.entity.Board;
 import com.sparta.week01_homework.repository.BoardRepository;
 import com.sparta.week01_homework.service.BoardService;
 import com.sparta.week01_homework.service.CustomUserDetailsImpl;
+import com.sparta.week01_homework.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,17 +25,23 @@ public class AuthController {
     private final BoardRepository boardRepository;
     private final BoardService boardService;
 
+//    @PostMapping("/test")
+//    public void testAuth(@AuthenticationPrincipal CustomUserDetailsImpl userDetails){
+//        System.out.println("dkdkdkdkd");
+//        System.out.println(userDetails.getUsername());
+//    }
+
     @PostMapping("/test")
-    public void testAuth(@AuthenticationPrincipal CustomUserDetailsImpl userDetails){
-        System.out.println("dkdkdkdkd");
-        System.out.println(userDetails.getUsername());
+    public String testAuth(){
+        System.out.println("------유저정보------\n\n" + SecurityUtil.getCurrentMemberName() + "\n\n----------------");
+        return "test";
     }
 
     // 작성
     @PostMapping("/post")
-    public Board createPost(@RequestBody BoardRequestDto boardRequestDto, @AuthenticationPrincipal CustomUserDetailsImpl userDetails) {
-        Board board = new Board(boardRequestDto,userDetails);
-        return boardRepository.save(board);
+    public Board createPost(@RequestBody BoardRequestDto boardRequestDto) {
+//        Board board = new Board(boardRequestDto,);
+//        return boardRepository.save(board);
     }
     //수정
     @PutMapping("/post/{id}")

@@ -2,6 +2,7 @@ package com.sparta.week01_homework.controller;
 
 import com.sparta.week01_homework.Category;
 import com.sparta.week01_homework.dto.BoardRequestDto;
+import com.sparta.week01_homework.dto.BoardResponseDto;
 import com.sparta.week01_homework.entity.Board;
 import com.sparta.week01_homework.repository.BoardRepository;
 import com.sparta.week01_homework.service.BoardService;
@@ -23,8 +24,8 @@ public class PostController {
 
     // 전체 게시글 조회
     @GetMapping("")
-    public Page<Board> getPosts(@PageableDefault(page = 0, size = 3, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) { //sort = "createdAt", direction = Sort.Direction.DESC
-        return boardRepository.findAll(pageable);
+    public List<Board> getPosts() { //@PageableDefault(page = 0, size = 3, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+        return boardRepository.findAll();
     }
 
     // 게시글 1개 조회

@@ -31,6 +31,7 @@ public class Board extends Timestamped{
     private Category category;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     public Board(String title, String content, Category category, User user){
@@ -39,11 +40,11 @@ public class Board extends Timestamped{
         this.category = category;
         this.user = user;
     }
-    public Board(BoardRequestDto boardRequestDto, CustomUserDetailsImpl userDetails){
+    public Board(BoardRequestDto boardRequestDto, User user){
         this.title = boardRequestDto.getTitle();
         this.content = boardRequestDto.getContent();
         this.category = boardRequestDto.getCategory();
-        this.user = userDetails.getUser();
+        this.user = user;
     }
     public void update(BoardRequestDto boardRequestDto){
         this.title = boardRequestDto.getTitle();

@@ -2,9 +2,11 @@ package com.sparta.week01_homework.service;
 
 import com.sparta.week01_homework.Category;
 import com.sparta.week01_homework.entity.Board;
+import com.sparta.week01_homework.entity.User;
 import com.sparta.week01_homework.repository.BoardRepository;
 import com.sparta.week01_homework.dto.BoardPasswordDto;
 import com.sparta.week01_homework.dto.BoardRequestDto;
+import com.sparta.week01_homework.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -55,14 +55,15 @@ public class AuthController {
     }
     //수정
     @PutMapping("/post/{id}")
-    public Long update(@PathVariable Long id, @RequestBody BoardRequestDto boardRequestDto){
-        
-        return boardService.update(id, boardRequestDto);
+    public void update(@PathVariable Long id, @RequestBody BoardRequestDto boardRequestDto){
+        User user = userRepository.findOneByUsername(SecurityUtil.getCurrentMemberName()).orElse(null);
+        boardService.update(id, boardRequestDto, user);
     }
     //삭제
     @DeleteMapping("/post/{id}")
     public void delete(@PathVariable Long id){
-        boardRepository.deleteById(id);
+        User user = userRepository.findOneByUsername(SecurityUtil.getCurrentMemberName()).orElse(null);
+        boardService.delete(id, user);
     }
     //댓글
 }

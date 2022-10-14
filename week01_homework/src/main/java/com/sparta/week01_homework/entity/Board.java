@@ -16,6 +16,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Board extends Timestamped{
     @Id
+    @Column(name = "board_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 

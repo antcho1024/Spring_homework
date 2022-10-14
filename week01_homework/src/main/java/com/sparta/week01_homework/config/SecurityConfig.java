@@ -63,6 +63,8 @@ public class SecurityConfig {
                 .sameOrigin()
 
                 // 세션을 사용하지 않기 때문에 STATELESS로 설정
+                // 원래 Security가 세션방식을 사용함
+                // 그래서 세션 방식 말고 다른 방식을 사용하겟다는 말
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -72,6 +74,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/api/member/**").permitAll()
                 .antMatchers("/api/post/**").permitAll()
+                .antMatchers("/api/comment").permitAll()
 //                .antMatchers("/api/auth/**").permitAll()//임시
 
                 .anyRequest().authenticated() // 나머지 요청들에 대해는 모두 인증을 받아야한다.

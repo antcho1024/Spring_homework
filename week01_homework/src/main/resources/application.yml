@@ -34,3 +34,6 @@ jwt:
 logging:
   level:
     me.silvernine: DEBUG
+
+#server.servlet.context-path=/sparta
+# 프로젝트 전체 별로 관리

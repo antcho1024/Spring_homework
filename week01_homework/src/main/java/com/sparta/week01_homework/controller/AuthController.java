@@ -65,5 +65,4 @@ public class AuthController {
         User user = userRepository.findOneByUsername(SecurityUtil.getCurrentMemberName()).orElse(null);
         boardService.delete(id, user);
     }
-    //댓글
 }

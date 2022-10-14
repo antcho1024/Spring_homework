@@ -20,7 +20,6 @@ import java.util.List;
 @RequestMapping("/api/post")
 public class PostController {
     private final BoardRepository boardRepository;
-    private final BoardService boardService;
 
     // 전체 게시글 조회
     @GetMapping("")

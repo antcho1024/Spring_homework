@@ -1,12 +1,17 @@
 package com.sparta.week01_homework.jwt;
 
 import com.sparta.week01_homework.dto.TokenDto;
+import com.sparta.week01_homework.dto.TokenRequestDto;
+import com.sparta.week01_homework.entity.RefreshToken;
+import com.sparta.week01_homework.repository.RefreshTokenRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,6 +19,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Key;
 import java.util.Arrays;
@@ -33,12 +39,16 @@ public class TokenProvider implements InitializingBean {
     private final long tokenValidityInMilliseconds;
     private Key key;
 
+    private final RefreshTokenRepository refreshTokenRepository;
+
+    @Autowired
     //의존성 주입
     public TokenProvider(
             @Value("${jwt.secret}") String secret,
-            @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
+            @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds, RefreshTokenRepository refreshTokenRepository) {
         this.secret = secret;
         this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
+        this.refreshTokenRepository = refreshTokenRepository;
     }
 
     // 받은 secret 값을 Base64 Decode 해서 key 변수에 할당
@@ -116,6 +126,37 @@ public class TokenProvider implements InitializingBean {
             logger.info("JWT 토큰이 잘못되었습니다.");
         }
         return false;
+    }
+
+    //토큰 재발금
+    @Transactional
+    public TokenDto reissue(TokenRequestDto tokenRequestDto) {
+        // 1. Refresh Token 검증
+        if (!validateToken(tokenRequestDto.getRefreshToken())) {
+            throw new RuntimeException("Refresh Token 이 유효하지 않습니다.");
+        }
+
+        // 2. Access Token 에서 Member ID 가져오기
+        Authentication authentication = getAuthentication(tokenRequestDto.getAccessToken());
+
+        // 3. 저장소에서 Member ID 를 기반으로 Refresh Token 값 가져옴
+        RefreshToken refreshToken = refreshTokenRepository.findByKey(authentication.getName())
+                .orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
+
+        // 4. Refresh Token 일치하는지 검사
+        if (!refreshToken.getValue().equals(tokenRequestDto.getRefreshToken())) {
+            throw new RuntimeException("토큰의 유저 정보가 일치하지 않습니다.");
+        }
+
+        // 5. 새로운 토큰 생성
+        TokenDto tokenDto = createToken(authentication);
+
+        // 6. 저장소 정보 업데이트
+        RefreshToken newRefreshToken = refreshToken.updateValue(tokenDto.getRefreshToken());
+        refreshTokenRepository.save(newRefreshToken);
+
+        // 토큰 발급
+        return tokenDto;
     }
 
     //parseClaims 메소드는 만료된 토큰이어도 정보를 꺼내기 위해서 따로 분리

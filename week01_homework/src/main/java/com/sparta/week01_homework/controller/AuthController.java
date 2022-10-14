@@ -2,6 +2,7 @@ package com.sparta.week01_homework.controller;
 
 import com.sparta.week01_homework.Category;
 import com.sparta.week01_homework.dto.BoardRequestDto;
+import com.sparta.week01_homework.dto.BoardResponseDto;
 import com.sparta.week01_homework.entity.Board;
 import com.sparta.week01_homework.entity.User;
 import com.sparta.week01_homework.repository.BoardRepository;
@@ -64,5 +65,21 @@ public class AuthController {
     public void delete(@PathVariable Long id){
         User user = userRepository.findOneByUsername(SecurityUtil.getCurrentMemberName()).orElse(null);
         boardService.delete(id, user);
+    }
+
+    // 게시글 퍼가기
+    @PostMapping("/post/save/{post_id}")
+    public String savePost(@PathVariable Long post_id) {
+        User user = userRepository.findOneByUsername(SecurityUtil.getCurrentMemberName()).orElse(null);
+        Board board = boardRepository.findById(post_id).orElse(null);
+        user.getMySavePost().add(board);
+        return ""; //컨트롤러에서는 디티오로 반환하기
+    }
+    // 퍼간 게시글
+    @GetMapping("/post/save")
+    public List<BoardResponseDto> savePost() {
+        User user = userRepository.findOneByUsername(SecurityUtil.getCurrentMemberName()).orElse(null);
+
+        return boardService.toBoardList(user); //컨트롤러에서는 디티오로 반환하기
     }
 }

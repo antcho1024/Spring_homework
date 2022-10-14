@@ -35,6 +35,8 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
-
+    @OneToMany
+    @JoinColumn(name = "board_id")
+    private List<Board> mySavePost;
 
 }
